@@ -5,6 +5,7 @@ Projeto Final dedicado a disciplina de Arquitetura de Software do Curso ADA
 
 # Arquitetura definida
 
+```
 movieflix-backend/
 ├── docker/                             # Infraestrutura do projeto
 │   ├── docker-compose.yml              # Sobe o Postgres, Nginx e a Aplicação
@@ -40,5 +41,7 @@ movieflix-backend/
 │   ├── application.properties          # Configurações de banco, porta, etc.
 │   └── import.sql                      # (Opcional) Script para Quarkus rodar e ler os CSVs no startup
 │
-├── pom.xml                             # Dependências (Panache, Resteasy, JDBC PG)
-└── Dockerfile                          # Para o GitHub Actions buildar a imagem
+└──pom.xml                             # Dependências (Panache, Resteasy, JDBC PG)
+
+
+```
