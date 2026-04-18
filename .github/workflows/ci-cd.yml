@@ -55,7 +55,7 @@ jobs:
           echo "POSTGRES_PORT=${{ vars.POSTGRES_PORT }}" >> .env
           
           # Sobe o banco, Nginx e a API do Quarkus
-          docker-compose --env-file .env up -d --build
+          docker compose --env-file .env up -d --build
           
           # Aguarda 20 segundos para garantir que o banco de dados e o framework Quarkus iniciaram completamente
           sleep 20 
