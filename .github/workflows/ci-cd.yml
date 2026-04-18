@@ -58,7 +58,10 @@ jobs:
           docker compose --env-file .env up -d --build
           
           # Aguarda 20 segundos para garantir que o banco de dados e o framework Quarkus iniciaram completamente
-          sleep 20 
+          sleep 20
+          
+          # Mostra os logs dos containers no Github Actions para investigarmos se algum deles morreu e por quê
+          docker compose logs
 
       # 7. Testa se a aplicação levantou e responde corretamente
       - name: Test Application
