@@ -34,7 +34,7 @@ jobs:
       - name: Build Docker Image
         working-directory: ./movieflix-backend
         run: |
-          docker build -f src/main/docker/Dockerfile.jvm -t ${{ secrets.DOCKER_USERNAME }}/Mflixbackend:latest .
+          docker build -f src/main/docker/Dockerfile.jvm -t ${{ secrets.DOCKER_USERNAME }}/mflixbackend:latest .
 
       # 6. Sobe a infraestrutura pelo docker-compose para testar
       - name: Build and Run Services (Test Environment)
@@ -69,4 +69,4 @@ jobs:
       # 8. Se tudo deu certo e o teste passou, envia a imagem finalizada para o Docker Hub
       - name: Push Docker Image to Docker Hub
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/Mflixbackend:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/mflixbackend:latest
