@@ -1,0 +1,72 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main    # Roda o pipeline sempre que houver um push na branch main
+      - master
+
+jobs:
+  build-test-publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Baixa o código do seu repositório para a máquina virtual do GitHub
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 2. Prepara o ambiente Java 21
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      # 3. Compila o código Java e gera o .jar 
+      - name: Build Java Application (Quarkus)
+        working-directory: ./movieflix-backend
+        run: |
+          chmod +x mvnw
+          ./mvnw clean package
+
+      # 4. Faz login no Docker Hub usando as credenciais 
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 5. Constrói a imagem Docker baseada no .jar 
+      - name: Build Docker Image
+        working-directory: ./movieflix-backend
+        run: |
+          docker build -f src/main/docker/Dockerfile.jvm -t ${{ secrets.DOCKER_USERNAME }}/movieflix-backend:latest .
+
+      # 6. Sobe a infraestrutura pelo docker-compose para testar
+      - name: Build and Run Services (Test Environment)
+        working-directory: ./movieflix-backend
+        run: |
+          # Criando um arquivo .env dinâmico 
+          echo "POSTGRES_USER=${{ vars.POSTGRES_USER }}" > .env
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
+          echo "POSTGRES_DB=${{ vars.POSTGRES_DB }}" >> .env
+          echo "POSTGRES_PORT=${{ vars.POSTGRES_PORT }}" >> .env
+          
+          # Sobe o banco, Nginx e a API do Quarkus
+          docker-compose --env-file .env up -d --build
+          
+          # Aguarda 20 segundos para garantir que o banco de dados e o framework Quarkus iniciaram completamente
+          sleep 20 
+
+      # 7. Testa se a aplicação levantou e responde corretamente
+      - name: Test Application
+        run: |
+          # O comando 'curl -f' falha silenciosamente caso o código HTTP não seja de sucesso (200-299)
+          # Isso vai bater na porta 80 do Nginx, que vai repassar pro backend-api:8080 simulando a vida real!
+          curl -f -v http://localhost/movies
+
+      # 8. Se tudo deu certo e o teste passou, envia a imagem finalizada para o Docker Hub
+      - name: Push Docker Image to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/movieflix-backend:latest

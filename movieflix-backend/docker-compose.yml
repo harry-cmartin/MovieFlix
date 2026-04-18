@@ -7,7 +7,7 @@ services:
     container_name: movieflix_db
     restart: always
     env_file:
-      - ../.env
+      - .env
     environment:
       #  substitui pelos valores do .env
       POSTGRES_USER: ${POSTGRES_USER}
@@ -17,6 +17,8 @@ services:
       - "${POSTGRES_PORT}:5432" # Expõe a porta 5432
     volumes:
       - postgres_data:/var/lib/postgresql/data # Persiste os dados se o container cair
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./movieflix-backend/docker/data/dataLake:/data/dataLake
 
   # 2. (Nginx)
   nginx-proxy:
@@ -32,10 +34,10 @@ services:
       - backend-api # Só sobe o Nginx depois que a API estiver de pé
 
   # 3.(Backend)
+
   backend-api:
-    # mjdar quando tiver a imagem no HUb =  seu-usuario/movieflix:latest
     build:
-      context: ../
+      context: .
       dockerfile: src/main/docker/Dockerfile.jvm
     container_name: movieflix_backend
     restart: on-failure
@@ -44,8 +46,6 @@ services:
       QUARKUS_DATASOURCE_USERNAME: ${POSTGRES_USER}
       QUARKUS_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
       QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://postgres-db:5432/${POSTGRES_DB}
-    ports:
-      - "8080:8080"
     depends_on:
       - postgres-db
 
