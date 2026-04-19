@@ -17,7 +17,7 @@ services:
       - "${POSTGRES_PORT}:5432" # Expõe a porta 5432
     volumes:
       - postgres_data:/var/lib/postgresql/data # Persiste os dados se o container cair
-      - ../init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./docker/data/dataLake:/data/dataLake
 
   # 2. (Nginx)

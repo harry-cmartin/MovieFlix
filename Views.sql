@@ -15,10 +15,6 @@ ORDER BY media_avaliacoes DESC
 LIMIT 50;
 
 
-DROP VIEW v_melhor_avaliacao_media;
-
 SELECT * FROM v_melhor_avaliacao_media;
-
-
-
 SELECT * FROM v_filmes_mais_populares;
+

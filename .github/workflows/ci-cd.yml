@@ -67,7 +67,7 @@ jobs:
       - name: Test Application
         run: |
           # O comando 'curl -f' falha silenciosamente caso o código HTTP não seja de sucesso (200-299)
-          # Isso vai bater na porta 80 do Nginx, que vai repassar pro backend-api:8080 simulando a vida real!
+   
           curl -f -v http://localhost/movies
           
       # 8. Se tudo deu certo e o teste passou, envia a imagem finalizada para o Docker Hub
