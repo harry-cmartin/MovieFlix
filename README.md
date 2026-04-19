@@ -100,4 +100,8 @@ Os três serviços subirão juntos. **A API responderá por trás do NGINX pela 
 
 
 
+# Entregaveis
 
+[Dockerfile](movieflix-backend/src/main/docker/Dockerfile.jvm)
+[Pipeline Actions](.github/workflows/ci-cd.yml)
+[ETL de dados](movieflix-backend/docker/etl-init.sql)
