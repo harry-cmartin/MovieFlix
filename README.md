@@ -9,7 +9,8 @@ Um fluxo de dados que simula Data Lake, Data Warehouse e Data Mart, com consulta
 
 
 ## Sobre a Aplicação
-MovieFlix é um sistema desenvolvido em **Java 21 com Quarkus**, projetado sob a arquitetura de **Monolito Modular**. Ele oferece o gerenciamento de filmes e avaliações (Ratings) com uma infraestrutura acoplada por contêineres Docker (PostgreSQL para dados e NGINX para roteamento reverso).
+
+MovieFlix é um sistema (sem interface) desenvolvido em **Java 21 com Quarkus**, projetado sob a arquitetura de **Monolito Modular**. Ele oferece o gerenciamento de filmes e avaliações (Ratings) com uma infraestrutura acoplada por contêineres Docker (PostgreSQL para dados e NGINX para roteamento reverso).
 Faz parte de uma esteira completa de engenharia, onde possui regras para simulação de Data Lake/Data Warehouse, além de pipeline em GitHub Actions.
 
 
